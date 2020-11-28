@@ -1,34 +1,54 @@
 using Plots
 
-logistic(x, r) = r*x*(1-x)
+"""
+Implementiert die Funktion x_{i+1} = r*x_i*(1-x_i)
+Tipp: Man kann eine Funktion als f(x) = ... definieren
+"""
 
-function skip(value, r, steps)
-    for i = 1:steps
-        value = logistic(value, r)
+function skip(wert, r, schritte)
+    for i = 1:schritte
+        wert = logistic(wert, r)
     end
-    return value
+    return wert
 end
 
-function logistic(steps, r, start, ignore = 0)
-    population = zeros(steps)
-    start = skip(start, r, ignore)
+function logistic(schritte, r, start, ignorieren = 0)
+    """
+    Ueberspringt die ersten Schritte (in Variable "ignorieren" gegeben).
+    Der resultierende Wert ist der neue Start-Wert
+    """
+
+    population = zeros(schritte)
     population[1] = start
-    for i = 2:steps
-        population[i] = logistic(population[i-1], r)
-    end
+
+    """
+    Wertet die Logistische Funktion schritte-mal aus und speichert das Ergebnis in
+    population an der zugehoerigen Stelle
+    """
     return population
 end
 
-function chaos(r_range, steps, digits, ignore = 10000)
-    r_values = []
-    values = []
-    for r = r_range
-        population = logistic(steps, r, 0.5, ignore)
-        population = unique(round.(population; digits=digits))
-        for val in population
-            append!(r_values, r)
-            append!(values, val)
-        end
-    end
-    return (r_values, values)
+function chaos(r_range, schritte, stellen, ignorieren = 10000)
+    r_werte = []
+    werte = []
+    """
+    Fuer alle r-Werte in r_range, berechnet "schritte" Werte der logistischen Funktion.
+    Fuegt diese Werte zu "werte" hinzu, und den zugehoerigen r-Wert in "r_werte"
+    Funktionen: append! oder push!
+
+    OPTIONAL:
+    Rundet die Werte auf "stellen" Nachstellen und schliesst alle mehrfach vorhandenen Werte aus
+    Funktionen: round, unique
+
+    """
+    return (r_werte, werte)
 end
+
+function main()
+    r_range = LinRange(0, 4, 1000)
+    schritte = 1000
+    stellen = 4
+    r_werte, werte = chaos(r_range, schritte, stellen)
+    scatter(r_werte, werte)
+end
+
