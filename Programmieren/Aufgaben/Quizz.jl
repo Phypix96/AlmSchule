@@ -40,14 +40,11 @@ function reaktion(auswahl, antwort)
 end
 
 function test(fragen, withoptions = true)
+    fragen = shuffle(fragen)
     for frage in fragen
         ask_frage(frage, withoptions)
         println()
     end
-end
-
-function test(fragen, n)
-    test(rand(fragen, n))
 end
 
 function main()

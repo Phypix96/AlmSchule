@@ -20,13 +20,13 @@ function ladedaten(länge, Nsongs, überspringen = Day(0))
         """
         Ladet die Datei herunter, wenn sie noch nicht existiert
 
-        Funktionen: ispath, download
-        Website z.B.: https://spotifycharts.com/regional/global/daily/2020-11-30/download
+        Funktionen: isfile, download
+        Website: https://spotifycharts.com/regional/global/daily/$datum/download
         """
 
         """
         Ladet daten in einen Array (mit Namen "daten"), wobei ihr die ersten beiden Zeilen auslaesst.
-        daten ist dann ein Array, in dem jeder Eintrag wie folgt aufgebaut ist:
+        'daten' ist dann ein Array, in dem jeder Eintrag wie folgt aufgebaut ist:
         Rang    Titel   Interpret   Wiedergaben    URL
         
         Funktion: readdlm
@@ -41,19 +41,15 @@ end
 
 
 function ladedaten(von::Date, bis::Date, Nsongs)
-    """
-    OPTIONAL
-    Berechnet Länge des Intervalls und Abstand von heute.
-
-    Funktionen: -, value, today
-    """
+    länge = (bis - von).value
+    überspringen = today() - bis
     return ladedaten(länge, Nsongs, überspringen)
 end
 
 
-function update!(Songs, titel, wiedergaben, i, length)
+function update!(Songs, titel, wiedergaben, i, länge)
     """
-    Falls der Song noch nicht in Songs ist, fügt einen neuen Array mit Länge length hinzu.
+    Falls der Song noch nicht in 'Songs' ist, fügt einen neuen Array mit Länge 'laenge' hinzu.
     Der Array sollte überall den Wert NaN haben
     Als nästes soll an der Stelle i des Arrays die Anzahl der Wiedergaben eingefügt werden
 
@@ -64,10 +60,10 @@ end
 
 
 function main()
-    von = Date(2018, 12, 20)
-    bis = Date(2018, 12, 30)
-    charts = ladedaten(von, bis, 10)
-    #charts = ladedaten(365, 4, 1)
+    #von = Date(2018, 12, 20)
+    #bis = Date(2018, 12, 30)
+    #charts = ladedaten(von, bis, 10)
+    charts = ladedaten(365, 4, 1)
     p = plot(legend=false)
     for val in values(charts)
         plot!(val)

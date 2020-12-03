@@ -1,11 +1,8 @@
 using Plots
 
-"""
-Implementiert die Funktion x_{i+1} = r*x_i*(1-x_i)
-Tipp: Man kann eine Funktion als f(x) = ... definieren
-"""
+logistic(x, r) = r*x*(1-x)
 
-function skip(wert, r, schritte)
+function ueberspringen(wert, r, schritte)
     for i = 1:schritte
         wert = logistic(wert, r)
     end
@@ -28,7 +25,7 @@ function logistic(schritte, r, start, ignorieren = 0)
     return population
 end
 
-function chaos(r_range, schritte, stellen, ignorieren = 10000)
+function chaos(r_bereich, schritte, stellen, ignorieren = 10000)
     r_werte = []
     werte = []
     """
@@ -45,10 +42,9 @@ function chaos(r_range, schritte, stellen, ignorieren = 10000)
 end
 
 function main()
-    r_range = LinRange(0, 4, 1000)
+    r_bereich = LinRange(0, 4, 1000)
     schritte = 1000
     stellen = 4
-    r_werte, werte = chaos(r_range, schritte, stellen)
-    scatter(r_werte, werte)
+    r_werte, werte = chaos(r_bereich, schritte, stellen)
+    scatter(r_werte, werte, markersize = 1, markerstrokewidth = 0.01)
 end
-
